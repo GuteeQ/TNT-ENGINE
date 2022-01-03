@@ -84,6 +84,25 @@ public class Finalizer implements Runnable {
 
     @Nullable
     private Method getFinalizerReferentMethod() {
-        
+        Class<?> finalizableReferenceClass = this.finalizableReferenceClassReference.get();
+        if (finalizableReferenceClass == null)
+            return null;
+        try {
+            return  finalizableReferenceClass.getMethod("finalizeReferent", new Class[0]);
+        } catch (NoSuchMethodException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    @Nullable
+    public static Field getInheritableThreadLocalsField() {
+        try {
+            Field inheritableThreadLocals = Thread.class.getDeclaredField("inheritableThreadLocals");
+            inheritableThreadLocals.setAccessible(true);
+            return inheritableThreadLocals;
+        } catch (Throwable t) {
+            logger.log(Level.INFO, "Couldn't access Thread.inheritableThreadLocals. Reference finalizer threads will inherit thread local values.");
+            return null;
+        }
     }
 }
