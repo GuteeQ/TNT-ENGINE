@@ -1,7 +1,7 @@
 /*
     Autor: .GuTeK <developer@tntnetwork.pl>
     Projekt: TNT-ENGINE
-    Zasoby: 1/2500
+    Zasoby: 2/2500
     Data: 03.01.2022
     Kontakt Discord: .GuTeK#0001
     Kontakt e-mail: developer@tntnetwork.pl
@@ -14,7 +14,11 @@ package com.GuTeK.common.annotations;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
 @GwtCompatible
-public @interface Beta {}
+public @interface GwtCompatible {
+    boolean serializable() default false;
+
+    boolean emulated() default false;
+}
